@@ -1,25 +1,27 @@
-include <unordered_map>
-using namespace std;
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
 
-int longestPalindrome(string s) {
-    unordered_map<char, int> freq;
+#define CHAR_SET_SIZE 128 // Assuming ASCII characters
+
+int longestPalindrome(const char *s) {
+    int freq[CHAR_SET_SIZE] = {0}; // Frequency array for characters
+    int length = 0;
+    int oddFound = 0;
+
     // Count the frequency of each character in the string
-    for (char c : s) {
-        freq[c]++;
+    for (int i = 0; s[i] != '\0'; i++) {
+        freq[(int)s[i]]++;
     }
 
-    int length = 0;
-    bool oddFound = false;
-
     // Iterate over the character frequencies
-    for (auto &entry : freq) {
-        // If the frequency is even, add it to the palindrome length
-        if (entry.second % 2 == 0) {
-            length += entry.second;
+    for (int i = 0; i < CHAR_SET_SIZE; i++) {
+        if (freq[i] % 2 == 0) {
+            length += freq[i]; // If the frequency is even, add it
         } else {
-            // If the frequency is odd, add the largest even part
-            length += entry.second - 1;
-            oddFound = true; // Mark that we found at least one odd frequency
+            length += freq[i] - 1; // Add the largest even part
+            oddFound = 1; // Mark that we found at least one odd frequency
         }
     }
 
@@ -32,8 +34,8 @@ int longestPalindrome(string s) {
 }
 
 int main() {
-    string s;
-    cin >> s;
-    cout << longestPalindrome(s) << endl;
+    char s[1000]; // Adjust size as needed
+    scanf("%s", s);
+    printf("%d\n", longestPalindrome(s));
     return 0;
 }
