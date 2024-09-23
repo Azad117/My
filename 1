@@ -1,0 +1,39 @@
+include <unordered_map>
+using namespace std;
+
+int longestPalindrome(string s) {
+    unordered_map<char, int> freq;
+    // Count the frequency of each character in the string
+    for (char c : s) {
+        freq[c]++;
+    }
+
+    int length = 0;
+    bool oddFound = false;
+
+    // Iterate over the character frequencies
+    for (auto &entry : freq) {
+        // If the frequency is even, add it to the palindrome length
+        if (entry.second % 2 == 0) {
+            length += entry.second;
+        } else {
+            // If the frequency is odd, add the largest even part
+            length += entry.second - 1;
+            oddFound = true; // Mark that we found at least one odd frequency
+        }
+    }
+
+    // If an odd frequency was found, we can place one odd character in the center
+    if (oddFound) {
+        length += 1;
+    }
+
+    return length;
+}
+
+int main() {
+    string s;
+    cin >> s;
+    cout << longestPalindrome(s) << endl;
+    return 0;
+}
